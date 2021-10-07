@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import "./App.css";
+import StyledTitle from "./components/StyledTitle"
+import StyledButton from "./components/StyledButton"
+import pig from "./assets/pig.png"
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       phrase: "",
-      phraseTranslated: "This is where your translated sentence will appear.",
+      phraseTranslated: "",
     };
   }
 
   myPigLatinCodeHere = () => {
     let userInput = this.state.phrase.split(" ");
-    console.log("userInput:", userInput);
-
     let translatedWordsArray = userInput.map((currentWord) => {
-      console.log("currentWord:", currentWord);
-
       let vowelsArray = currentWord.split("").filter((vowel) => {
         return (
           vowel === "a" ||
@@ -26,8 +26,6 @@ class App extends Component {
           vowel === "u"
         );
       });
-      console.log("vowelsArray:", vowelsArray);
-      console.log(currentWord.indexOf(vowelsArray[0]));
 
       var firstVowel = currentWord.indexOf(vowelsArray[0]);
       var slicedWord = currentWord.slice(2);
@@ -51,18 +49,14 @@ class App extends Component {
         );
       }
 
-      console.log(currentWord.indexOf(vowelsArray[0]));
 
     });
 
     let translatedWords = translatedWordsArray.join(" ");
-    // console.log("translatedWords:", translatedWords);
     this.setState({ phraseTranslated: translatedWords });
   };
 
   restartGame = () => {
-    // this method restarts the game by setting the original state
-    // ACTION ITEM: when you are ready for your full user experience, delete the test words in phrase so that is assigned an empty string
     this.setState({
       phrase: "",
       phraseTranslated: "",
@@ -70,7 +64,6 @@ class App extends Component {
   };
 
   setUpPreventDefault = (e) => {
-    // this method prevents React from refreshing the page unnecessarily
     e.preventDefault();
     this.myPigLatinCodeHere();
   };
@@ -82,21 +75,30 @@ class App extends Component {
   render() {
     return (
       <>
-        <h1>Pig Latin Translator</h1>
-        {/* <img/> */}
-        <div className="inputArea">
-          <h4>Enter phrase to be translated:</h4>
+      <div className="m-12 pl-40 relative h-32">
+        <StyledTitle className="">Pig Latin</StyledTitle>
+        <StyledTitle>Translator</StyledTitle>
+        
+        <img className="absolute inset-y-0 right-0 flex-shrink" src={pig}/>
+        
+        <br/>
+        <div className="max-w-sm rounded overflow-hidden shadow-lg text-center">
+          <h4 className="pb-3">Enter phrase to be translated:</h4>
           <input
             type="text"
-            className="userInput"
+            className="border-4 border-yellow rounded-lg pt-2 w-200"
             onChange={this.handleInput}
             value={this.state.phrase}
           />
           <br />
-          <button onClick={this.setUpPreventDefault}>Submit</button>
-          <button onClick={this.restartGame}>Clear</button>
+          <StyledButton onClick={this.setUpPreventDefault}>Submit</StyledButton>
+          <StyledButton onClick={this.restartGame}>Clear</StyledButton>
         </div>
-        <p>{this.state.phraseTranslated}</p>
+        <br/>
+        <div className="max-w-sm bg-pink-light rounded shadow-lg text-center text-white">
+        <p> {this.state.phraseTranslated}</p>
+        </div>
+        </div>
       </>
     );
   }
